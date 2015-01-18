@@ -1,0 +1,71 @@
+﻿2014/10/24 15:37:19 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\FuzzyJudgement\FuzzyJudgement.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Debug\FuzzyJudgement.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt FuzzyJudgement.cpp MyDataFunction.cpp
+         MyDataFunction.cpp
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.h(106): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.cpp(67): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.cpp(72): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.cpp(252): warning C4244: '=' : 'double' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.cpp(336): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : 'strtok' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.cpp(341): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(197) : 'strtok' の宣言を確認してください。
+         FuzzyJudgement.cpp
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\mydatafunction.h(106): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(134): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(138): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(162): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(167): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(177): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(181): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(185): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(199): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(207): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(222): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(226): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(229): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : 'sprintf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(260): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(272): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : 'sscanf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(292): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(303): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : 'sscanf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(311): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(318): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : 'sscanf' の宣言を確認してください。
+     1>c:\users\nagai\desktop\fuzzyjudgement+mesuare\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(387): warning C4101: 'fname' : ローカル変数は 1 度も使われていません。
+         コードを生成中...
+       ManifestResourceCompile:
+         すべての出力が最新のものです。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\Debug\FuzzyJudgement.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FuzzyJudgement.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\Debug\FuzzyJudgement.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\Debug\FuzzyJudgement.lib" /MACHINE:X86 Debug\FuzzyJudgement.exe.embed.manifest.res
+         Debug\FuzzyJudgement.obj
+         Debug\MyDataFunction.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FuzzyJudgement.exe.embed.manifest" /manifest Debug\FuzzyJudgement.exe.intermediate.manifest
+         すべての出力が最新のものです。
+       LinkEmbedManifest:
+         すべての出力が最新のものです。
+         FuzzyJudgement.vcxproj -> C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\Debug\FuzzyJudgement.exe
+       FinalizeBuildStatus:
+         ファイル "Debug\FuzzyJudgement.unsuccessfulbuild" を削除しています。
+         "Debug\FuzzyJudgement.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "C:\Users\NAGAI\Desktop\FuzzyJudgement+mesuare\FuzzyJudgement\FuzzyJudgement\FuzzyJudgement.vcxproj" (build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:01.08
