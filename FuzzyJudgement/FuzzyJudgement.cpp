@@ -362,6 +362,8 @@ int main(int argc,char *argv[])
 	int bst=20,bed=30;
 	int gst=0,ged=0;
 
+	fp = fopen("bandp.csv","w");
+
 	//vector<vector<double>> avergof;
 	//averageGoodOfFit(avergof,fftArray,bandfgydata,ruletable,probability,start,end,width,Delta,diffFlag);
 	
@@ -383,6 +385,8 @@ int main(int argc,char *argv[])
 		bandp[3] = betap;
 		bandp[4] = gammap;
 
+		fprintf(fp,"%f,%f,%f,%f,%f,\n",deltap,thetap,alphap,betap,gammap);
+
 		//ファイルに記録
 		char fname[1024];
 		int rulecount = ruletable.size();
@@ -390,12 +394,12 @@ int main(int argc,char *argv[])
 		#pragma region 1つずつの変動を見る
 
 		
-		int sk=20,ek=40;
+		int sk=10,ek=20;
 
 		//δについて--------------------------------------------------------------
-		//vector<double> deltatmgof;
-		//
-		////δ以外固定
+		vector<double> deltatmgof;
+		
+		//δ以外固定
 		//bandfgydata[1].makeMenberSipFunction(sk,ek,sk,ek);			
 		//bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
 		//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
@@ -406,15 +410,15 @@ int main(int argc,char *argv[])
 		//----------------------------------------------------------------------------------------
 		
 		//θについて--------------------------------------------------------------	
-		//vector<double> thetatmgof;
-		//
-		////θ以外固定
-		//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		//bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
-		//calcGoodOfFit(thetatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Theta,diffFlag);
-		//thetagof.push_back(thetatmgof);
+		vector<double> thetatmgof;
+		
+		//θ以外固定
+		bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+		bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
+		bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
+		bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
+		calcGoodOfFit(thetatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Theta,diffFlag);
+		thetagof.push_back(thetatmgof);
 		
 		//---------------------------------------------------------------------------
 
@@ -444,15 +448,15 @@ int main(int argc,char *argv[])
 		//-------------------------------------------------------------------------
 
 		//γについて--------------------------------------------------------------
-		vector<double> gammatmgof;
-		
-		//γ以外固定
-		bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		bandfgydata[1].makeMenberSipFunction(tst,ted,tst,ted);
-		bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
-		bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);	
-		calcGoodOfFit(gammatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Gamma,diffFlag);
-		gammagof.push_back(gammatmgof);
+		//vector<double> gammatmgof;
+		//
+		////γ以外固定
+		//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+		//bandfgydata[1].makeMenberSipFunction(tst,ted,tst,ted);
+		//bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
+		//bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);	
+		//calcGoodOfFit(gammatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Gamma,diffFlag);
+		//gammagof.push_back(gammatmgof);
 		
 
 		#pragma endregion
@@ -569,6 +573,8 @@ int main(int argc,char *argv[])
 		//fclose(fp);
 	}
 
+	fclose(fp);
+
 	#pragma endregion
 
 	#pragma region ファイル出力部
@@ -577,10 +583,10 @@ int main(int argc,char *argv[])
 
 	////δ------------------------------------------------------------
 	//result_write(fp,"deltaT-GOF.csv",deltagof,start,width,end);
-	//result_write(fp,"thetaT-GOF.csv",thetagof,start,width,end);
+	result_write(fp,"thetaT-GOF.csv",thetagof,start,width,end);
 	//result_write(fp,"alphaT-GOF.csv",alphagof,start,width,end);
 	//result_write(fp,"betaT-GOF.csv" ,betagof ,start,width,end);
-	result_write(fp,"gammaT-GOF.csv",gammagof,start,width,end);
+	//result_write(fp,"gammaT-GOF.csv",gammagof,start,width,end);
 
 
 	#pragma endregion

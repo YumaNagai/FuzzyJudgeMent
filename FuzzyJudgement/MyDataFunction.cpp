@@ -241,86 +241,124 @@ void MyFourierTransform::IFFT()
 ---------------------------------------------------------------*/
 double getWaveProbability(MyFourierTransform* fft,WaveBandType wbtype)
 {
-	double spectrumwidth = 512.0 / fft->GetfftArraySize();
+	/*
 	double sum = 0;
 	double bandpower = 0;
-	const std::complex<double> *fftArray = fft->ReturnPtr(0);
 	double power = 0;
 	double bandpower2 = 0;
-	int ii=0;
+	int ii=0;*/
+	
+	const std::complex<double> *fftArray = fft->ReturnPtr(0);
+	double spectrumwidth = 512.0 / fft->GetfftArraySize();
+	double minmamband = 0.5;
+    double bandpower = 0;
+    double sum = 0;
+    double power = 0;
+    int ii = 1;                 //0‚ª’¼—¬¬•ª
 
-	ii = ((0.1/spectrumwidth)<=1.0) ? 1 : (0.1/spectrumwidth);
+    //•ª‰ğ”\‚ª‘«‚è‚È‚¢ê‡‚Ì•â³
+    if(spectrumwidth > minmamband)
+    {
+        ii = 1; //’¼—¬‚ğŠÜ‚Ü‚È‚¢Å‰‚ÌƒCƒ“ƒfƒNƒX
+    }
 
-	for(;ii<(int)(100.0/spectrumwidth);ii++)
-	{
-		power = (abs(fftArray[ii]) * abs(fftArray[ii]));
-		
-		switch(wbtype)
-		{
-			//ƒÂ”g
+    //•ª‰ğ”\‚ª‘«‚è‚Ä‚¢‚éê‡
+    else
+    {
+        double dd = spectrumwidth;
+
+        //•ª‰ğ”\‚ª‘«‚è‚éê‡ŠY“–ƒCƒ“ƒfƒNƒX‚Ü‚Åi‚ß‚é
+        while(minmamband >= dd)
+        {
+            dd +=  spectrumwidth;
+            ii++;
+        }
+    }
+
+    for (; ii < (int)(100.0 / spectrumwidth); ii++)
+    {
+        power = (abs(fftArray[ii]) * abs(fftArray[ii]));
+
+        switch (wbtype)
+        {
+            //ƒÂ”g
 			case Delta:
-			{
-				bool bandmin = (ii >= (int)(0.1/spectrumwidth));
-				bool bandmax = (ii < (int)(3.0/spectrumwidth));
-				
-				if( bandmin && bandmax ) bandpower += power;
-				else bandpower2 += power;
+            {
+                //bool bandmin = (ii >  (int)(minmamband / spectrumwidth));
+                bool bandmax = (ii <= (int)(3.0 / spectrumwidth));
 
-			}break;
+                if (bandmax == true) bandpower += power;
 
-			//ƒÆ”g
+            } break;
+
+            //ƒÆ”g
 			case Theta:
-			{
-				bool bandmin = (ii >= (int)(4.0/spectrumwidth));
-				bool bandmax = (ii < (int)(7.0/spectrumwidth));
-				
-				if( bandmin && bandmax ) bandpower += power;
-			}break;
-			
-			//ƒ¿”g
+            {
+                bool bandmin = (ii > (int)(4.0 / spectrumwidth));
+                bool bandmax = (ii <= (int)(7.0 / spectrumwidth));
+
+                if (bandmin == true && bandmax == true) bandpower += power;
+            } break;
+
+            //ƒ¿”g
 			case Alpha:
-			{
-				bool bandmin = (ii >= (int)(8.0/spectrumwidth));
-				bool bandmax = (ii < (int)(12.0/spectrumwidth));
-				
-				if( bandmin && bandmax ) bandpower += power;
+            {
+                bool bandmin = (ii > (int)(8.0 / spectrumwidth));
+                bool bandmax = (ii <= (int)(12.0 / spectrumwidth));
 
-			}break;
+                if (bandmin == true && bandmax == true) bandpower += power;
 
-			//ƒÀ”g
-			case Beta:
-			{
-				bool bandmin = (ii >= (int)(13.0/spectrumwidth));
-				bool bandmax = (ii < (int)(30.0/spectrumwidth));
-				
-				if( bandmin && bandmax ) bandpower += power;
+            } break;
 
-			}break;
+            //ƒÀ”g
+            case Beta:
+            {
+                bool bandmin = (ii > (int)(13.0 / spectrumwidth));
+                bool bandmax = (ii <= (int)(30.0 / spectrumwidth));
 
-			//ƒÁ”g
-			case Gamma:
-			{
-				bool bandmin = (ii >= (int)(30.0/spectrumwidth));
-				bool bandmax = (ii < (int)(100.0/spectrumwidth));
-				
-				if( bandmin && bandmax ) bandpower += power;
-				
-			}break;	
-		}
+                if (bandmin == true && bandmax == true) bandpower += power;
 
-		/*NeuroSkyü”g”’è‹`‚Å‚Í3.0`4.0‚Æ‚È‚Çü”g”ŠÔ‚ª‹ó‚­ê‡‚ª
-		‚ ‚é‚½‚ß‚»‚Ì•ª‚Ìü”g””z—ñ—v‘f‚ÉŠÖ‚µ‚Ä‚Í‰ÁZ‚ğœŠO‚·‚é*/
-		bool aa = (ii >= (int)(3.0/spectrumwidth));
-		bool bb = (ii <  (int)(4.0/spectrumwidth));
-		bool cc = (ii >= (int)(7.0/spectrumwidth));
-		bool dd = (ii <  (int)(8.0/spectrumwidth));
-		bool ee = (ii >= (int)(12.0/spectrumwidth));
-		bool ff = (ii <  (int)(13.0/spectrumwidth));
+            } break;
 
-		if( (aa && bb) || (cc && dd) || (ee && ff) ) ;
-		else sum += power;
-	}
-	return (bandpower/sum);
+            //ƒÁ”g
+            case Gamma:
+            {
+                bool bandmin = (ii > (int)(30.0 / spectrumwidth));
+                bool bandmax = (ii <= (int)(100.0 / spectrumwidth));
+
+                if (bandmin == true && bandmax == true) bandpower += power;
+
+            } break;
+        }
+
+        /*NeuroSkyü”g”’è‹`‚Å‚Í3.0`4.0‚Æ‚È‚Çü”g”ŠÔ‚ª‹ó‚­ê‡‚ª
+        ‚ ‚é‚½‚ß‚»‚Ì•ª‚Ìü”g””z—ñ—v‘f‚ÉŠÖ‚µ‚Ä‚Í‰ÁZ‚ğœŠO‚·‚é*/
+        //ƒÂ-ƒÆŠÔ
+        bool aa = (ii > (int)(3.0 / spectrumwidth));
+        bool bb = (ii <= (int)(4.0 / spectrumwidth));
+
+        //ƒÆ-ƒ¿ŠÔ
+        bool cc = (ii > (int)(7.0 / spectrumwidth));
+        bool dd = (ii <= (int)(8.0 / spectrumwidth));
+
+        //ƒ¿-ƒÀŠÔ
+        bool ee = (ii > (int)(12.0 / spectrumwidth));
+        bool ff = (ii <= (int)(13.0 / spectrumwidth));
+
+        //‹ó•¶Às
+        if ((aa && bb) || (cc && dd) || (ee && ff))
+        {
+            ;
+        }
+
+        //‚»‚Ì‘¼
+        else
+        {
+            sum += power;
+        }
+    }
+
+    return (bandpower/sum);
 }
 
 ///<@brief •¶š—ñ•ªŠ„ŠÖ”
