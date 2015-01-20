@@ -148,6 +148,73 @@ void averageGoodOfFit(vector<vector<double>>& avrgof,vector<MyFourierTransform*>
 
 #pragma endregion
 
+#pragma region 適合度算出+ファイル出力
+
+void writegof(FILE* fp,vector<MyFourierTransform*>& fftArray,MeberSipFunctionData *data,vector<FuzzyRlue>& ruletable)
+{
+	double Nwgrade = 0;		//No重み付き適合度
+	double Ngrade  = 0;		//No適合度
+	double Ywgrade = 0;		//Yes重み付き適合度
+	double Ygrade  = 0;		//Yes適合度
+	int rulecount = ruletable.size();
+	int datacount = fftArray.size();
+
+	for(int ii=0;datacount;ii++)
+	{
+		Ygrade = Ywgrade = Ngrade = Nwgrade = 0;
+		double bandp[5]={0};
+		double deltap = getWaveProbability(fftArray[ii],Delta) * 100 ;
+		double thetap = getWaveProbability(fftArray[ii],Theta) * 100 ;
+		double alphap = getWaveProbability(fftArray[ii],Alpha) * 100 ;
+		double betap  = getWaveProbability(fftArray[ii],Beta)  * 100 ;
+		double gammap = getWaveProbability(fftArray[ii],Gamma) * 100 ;
+
+		//ルールテーブルによる適合度計算
+		for(int kk=0;kk<rulecount;kk++)
+		{								
+			double min = DBL_MAX;
+					
+			for(int aa=0;aa<5;aa++)
+			{
+				char state;
+						
+				switch(aa)
+				{
+					case 0: state = ruletable[kk].deltaState; break;
+					case 1: state = ruletable[kk].thetaState; break;
+					case 2: state = ruletable[kk].alphaState; break;
+					case 3: state = ruletable[kk].betaState;  break;
+					case 4: state = ruletable[kk].gammaState; break;
+					default: break;
+				}
+
+				double ppp = data[aa].fuzzyset(bandp[aa],state);
+				if(min >= ppp) min = ppp;
+			}
+
+			//Yes出力
+			Ygrade += min;
+			Ywgrade += (min * ruletable[kk].yesWeight);
+										
+			//No出力
+			Ngrade += min;
+			Nwgrade += (min * ruletable[kk].noWeight);
+		}
+
+		double Ytgrade,Ntgrade;
+
+		Ytgrade = (Ygrade == 0) ? 0 : Ywgrade/Ygrade;
+		Ntgrade = (Ngrade == 0) ? 0 : Nwgrade/Ngrade;
+
+		fprintf(fp,"%f,%f,%f,%f,%f,%f,%f,\n",bandp[0],bandp[1],bandp[2],bandp[3],bandp[4],Ytgrade,Ntgrade);
+	}
+}
+
+
+
+
+#pragma endregion
+
 #pragma region 結果書き出し
 
 //その1
@@ -360,220 +427,222 @@ int main(int argc,char *argv[])
 	int tst=20,ted=30;
 	int ast=20,aed=40;
 	int bst=20,bed=30;
-	int gst=0,ged=0;
-
-	fp = fopen("bandp.csv","w");
-
-	//vector<vector<double>> avergof;
-	//averageGoodOfFit(avergof,fftArray,bandfgydata,ruletable,probability,start,end,width,Delta,diffFlag);
-	
-	#pragma region ファジー計算部(現在旧ソースコード)
-
-	//データ個数分繰り返し
-	for(int ii=0;ii<datacount;ii++)
-	{
-		double bandp[5]={0};
-		double deltap = getWaveProbability(fftArray[ii],Delta) * 100 ;
-		double thetap = getWaveProbability(fftArray[ii],Theta) * 100 ;
-		double alphap = getWaveProbability(fftArray[ii],Alpha) * 100 ;
-		double betap  = getWaveProbability(fftArray[ii],Beta)  * 100 ;
-		double gammap = getWaveProbability(fftArray[ii],Gamma) * 100 ;
+	int gst=20,ged=30;
 		
-		bandp[0] = deltap;
-		bandp[1] = thetap;
-		bandp[2] = alphap;
-		bandp[3] = betap;
-		bandp[4] = gammap;
+	bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+	bandfgydata[1].makeMenberSipFunction(tst,ted,tst,ted);
+	bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
+	bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);
+	bandfgydata[4].makeMenberSipFunction(gst,ged,gst,ged);
 
-		fprintf(fp,"%f,%f,%f,%f,%f,\n",deltap,thetap,alphap,betap,gammap);
 
-		//ファイルに記録
-		char fname[1024];
-		int rulecount = ruletable.size();
-		
-		#pragma region 1つずつの変動を見る
+	#pragma region ファジー計算部
 
-		
-		int sk=10,ek=20;
+	////データ個数分繰り返し
+	//for(int ii=0;ii<datacount;ii++)
+	//{
+	//	double bandp[5]={0};
+	//	double deltap = getWaveProbability(fftArray[ii],Delta) * 100 ;
+	//	double thetap = getWaveProbability(fftArray[ii],Theta) * 100 ;
+	//	double alphap = getWaveProbability(fftArray[ii],Alpha) * 100 ;
+	//	double betap  = getWaveProbability(fftArray[ii],Beta)  * 100 ;
+	//	double gammap = getWaveProbability(fftArray[ii],Gamma) * 100 ;
+	//	
+	//	bandp[0] = deltap;
+	//	bandp[1] = thetap;
+	//	bandp[2] = alphap;
+	//	bandp[3] = betap;
+	//	bandp[4] = gammap;
 
-		//δについて--------------------------------------------------------------
-		vector<double> deltatmgof;
-		
-		//δ以外固定
-		//bandfgydata[1].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
-		//calcGoodOfFit(deltatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Delta,diffFlag);
-		//deltagof.push_back(deltatmgof);
+	//	//fprintf(fp,"%f,%f,%f,%f,%f,\n",deltap,thetap,alphap,betap,gammap);
 
-		//----------------------------------------------------------------------------------------
-		
-		//θについて--------------------------------------------------------------	
-		vector<double> thetatmgof;
-		
-		//θ以外固定
-		bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
-		bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
-		bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
-		calcGoodOfFit(thetatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Theta,diffFlag);
-		thetagof.push_back(thetatmgof);
-		
-		//---------------------------------------------------------------------------
+	//	//ファイルに記録
+	//	char fname[1024];
+	//	int rulecount = ruletable.size();
+	//	
+	//	#pragma region 1つずつの変動を見る
 
-		
-		//αについて--------------------------------------------------------------
-		//vector<double> alphatmgof;
-		//
-		////α以外固定
-		//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		//bandfgydata[1].makeMenberSipFunction(tst,ted,sts,ted);			
-		//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
-		//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);
-		//calcGoodOfFit(alphatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Alpha,diffFlag);
-		//alphagof.push_back(alphatmgof);
-		//-----------------------------------------------------------------------
+	//	
+	//	int sk=30,ek=40;
 
-		//βについて--------------------------------------------------------------
-		//vector<double> betatmgof;
+	//	//δについて--------------------------------------------------------------
+	//	vector<double> deltatmgof;
+	//	
+	//	//δ以外固定
+	//	bandfgydata[1].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	calcGoodOfFit(deltatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Delta,diffFlag);
+	//	deltagof.push_back(deltatmgof);
 
-		////β以外固定
-		//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		//bandfgydata[1].makeMenberSipFunction(tst,ted,sts,ted);
-		//bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
-		//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);
-		//calcGoodOfFit(betatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Beta,diffFlag);
-		//betagof.push_back(betatmgof);
-		//-------------------------------------------------------------------------
+	//	//----------------------------------------------------------------------------------------
+	//	
+	//	//θについて--------------------------------------------------------------	
+	//	//vector<double> thetatmgof;
+	//	//
+	//	////θ以外固定
+	//	//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+	//	//bandfgydata[2].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	//calcGoodOfFit(thetatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Theta,diffFlag);
+	//	//thetagof.push_back(thetatmgof);
+	//	
+	//	//---------------------------------------------------------------------------
 
-		//γについて--------------------------------------------------------------
-		//vector<double> gammatmgof;
-		//
-		////γ以外固定
-		//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
-		//bandfgydata[1].makeMenberSipFunction(tst,ted,tst,ted);
-		//bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
-		//bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);	
-		//calcGoodOfFit(gammatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Gamma,diffFlag);
-		//gammagof.push_back(gammatmgof);
-		
+	//	
+	//	//αについて--------------------------------------------------------------
+	//	//vector<double> alphatmgof;
+	//	//
+	//	////α以外固定
+	//	//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+	//	//bandfgydata[1].makeMenberSipFunction(tst,ted,sts,ted);			
+	//	//bandfgydata[3].makeMenberSipFunction(sk,ek,sk,ek);			
+	//	//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);
+	//	//calcGoodOfFit(alphatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Alpha,diffFlag);
+	//	//alphagof.push_back(alphatmgof);
+	//	//-----------------------------------------------------------------------
 
-		#pragma endregion
+	//	//βについて--------------------------------------------------------------
+	//	//vector<double> betatmgof;
 
-		#pragma region (旧ソースコード) 変動＋適合度算出
+	//	////β以外固定
+	//	//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+	//	//bandfgydata[1].makeMenberSipFunction(tst,ted,sts,ted);
+	//	//bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
+	//	//bandfgydata[4].makeMenberSipFunction(sk,ek,sk,ek);
+	//	//calcGoodOfFit(betatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Beta,diffFlag);
+	//	//betagof.push_back(betatmgof);
+	//	//-------------------------------------------------------------------------
 
-		////δ変動
-		//for(int dp1=0; dp1<end; dp1+=width)
-		//{
-		//	for(int dp2=start+dp1; dp2<=end; dp2+=width)
-		//	{
-		//		#pragma region θ変動部
+	//	//γについて--------------------------------------------------------------
+	//	//vector<double> gammatmgof;
+	//	
+	//	////γ以外固定
+	//	//bandfgydata[0].makeMenberSipFunction(dst,ded,dst,ded);			
+	//	//bandfgydata[1].makeMenberSipFunction(tst,ted,tst,ted);
+	//	//bandfgydata[2].makeMenberSipFunction(ast,aed,ast,aed);			
+	//	//bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);
+	//	//calcGoodOfFit(gammatmgof,bandfgydata,ruletable,bandp,probability[ii],start,end,width,Gamma,diffFlag);
+	//	//gammagof.push_back(gammatmgof);
+	//	
 
-		//		//θ変動
-		//		for(int tp1=0; tp1<end; tp1+=width)
-		//		{
-		//			for(int tp2=start+tp1; tp2<=end; tp2+=width)
-		//			{
-		//				#pragma region α変動部
+	//	#pragma endregion
 
-		//				//α変動
-		//				for(int ap1=0; ap1<end; ap1+=width)
-		//				{
-		//					for(int ap2=start+ap1; ap2<=end; ap2+=width)
-		//					{
-		//						#pragma region β変動分
+	//	#pragma region (旧ソースコード) 変動＋適合度算出
 
-		//						//β変動
-		//						for(int bp1=0; bp1<end; bp1+=width)
-		//						{
-		//							for(int bp2=start+bp1; bp2<=end; bp2+=width)
-		//							{
-		//								#pragma region γ変動分
+	//	////δ変動
+	//	//for(int dp1=0; dp1<end; dp1+=width)
+	//	//{
+	//	//	for(int dp2=start+dp1; dp2<=end; dp2+=width)
+	//	//	{
+	//	//		#pragma region θ変動部
 
-		//								//γ変動
-		//								for(int gp1=0; gp1<end; gp1+=width)
-		//								{
-		//									for(int gp2=start+gp1; gp2<=end; gp2+=width)
-		//									{
-		//										#pragma region ルールテーブルによる適合度算出
+	//	//		//θ変動
+	//	//		for(int tp1=0; tp1<end; tp1+=width)
+	//	//		{
+	//	//			for(int tp2=start+tp1; tp2<=end; tp2+=width)
+	//	//			{
+	//	//				#pragma region α変動部
 
-		//										Ygrade = Ywgrade = Ngrade = Nwgrade = 0;
+	//	//				//α変動
+	//	//				for(int ap1=0; ap1<end; ap1+=width)
+	//	//				{
+	//	//					for(int ap2=start+ap1; ap2<=end; ap2+=width)
+	//	//					{
+	//	//						#pragma region β変動分
 
-		//										bandfgydata[0].makeMenberSipFunction(dp1,dp2,dp1,dp2);
-		//										bandfgydata[1].makeMenberSipFunction(tp1,tp2,tp1,tp2);
-		//										bandfgydata[2].makeMenberSipFunction(ap1,ap2,ap1,ap2);
-		//										bandfgydata[3].makeMenberSipFunction(bp1,bp2,bp1,bp2);
-		//										bandfgydata[4].makeMenberSipFunction(gp1,gp2,gp1,gp2);
+	//	//						//β変動
+	//	//						for(int bp1=0; bp1<end; bp1+=width)
+	//	//						{
+	//	//							for(int bp2=start+bp1; bp2<=end; bp2+=width)
+	//	//							{
+	//	//								#pragma region γ変動分
 
-		//										//ルールテーブルによる適合度計算
-		//										for(int jj=0;jj<rulecount;jj++)
-		//										{
-		//											double datamin[5]={0};
-		//												
-		//											datamin[0] = bandfgydata[0].fuzzyset(deltap,ruletable[jj].deltaState);
-		//											datamin[1] = bandfgydata[1].fuzzyset(thetap,ruletable[jj].thetaState);
-		//											datamin[2] = bandfgydata[2].fuzzyset(alphap,ruletable[jj].alphaState);
-		//											datamin[3] = bandfgydata[3].fuzzyset(betap,ruletable[jj].betaState);
-		//											datamin[4] = bandfgydata[4].fuzzyset(gammap,ruletable[jj].gammaState);
-		//						
-		//											//And結合のため最小値を求める
-		//											double min = DBL_MAX;
-		//								
-		//											for(int kk = 0; kk<5; kk++)
-		//											{ 
-		//												if( min >= datamin[kk]) min = datamin[kk];
-		//											}
+	//	//								//γ変動
+	//	//								for(int gp1=0; gp1<end; gp1+=width)
+	//	//								{
+	//	//									for(int gp2=start+gp1; gp2<=end; gp2+=width)
+	//	//									{
+	//	//										#pragma region ルールテーブルによる適合度算出
 
-		//						
-		//											//Yes出力
-		//											Ygrade += min;
-		//											Ywgrade += (min * ruletable[jj].yesWeight);
-		//								
-		//											//No出力
-		//											Ngrade += min;
-		//											Nwgrade += (min * ruletable[jj].noWeight);
+	//	//										Ygrade = Ywgrade = Ngrade = Nwgrade = 0;
 
-		//										}	
+	//	//										bandfgydata[0].makeMenberSipFunction(dp1,dp2,dp1,dp2);
+	//	//										bandfgydata[1].makeMenberSipFunction(tp1,tp2,tp1,tp2);
+	//	//										bandfgydata[2].makeMenberSipFunction(ap1,ap2,ap1,ap2);
+	//	//										bandfgydata[3].makeMenberSipFunction(bp1,bp2,bp1,bp2);
+	//	//										bandfgydata[4].makeMenberSipFunction(gp1,gp2,gp1,gp2);
 
-		//										#pragma endregion
+	//	//										//ルールテーブルによる適合度計算
+	//	//										for(int jj=0;jj<rulecount;jj++)
+	//	//										{
+	//	//											double datamin[5]={0};
+	//	//												
+	//	//											datamin[0] = bandfgydata[0].fuzzyset(deltap,ruletable[jj].deltaState);
+	//	//											datamin[1] = bandfgydata[1].fuzzyset(thetap,ruletable[jj].thetaState);
+	//	//											datamin[2] = bandfgydata[2].fuzzyset(alphap,ruletable[jj].alphaState);
+	//	//											datamin[3] = bandfgydata[3].fuzzyset(betap,ruletable[jj].betaState);
+	//	//											datamin[4] = bandfgydata[4].fuzzyset(gammap,ruletable[jj].gammaState);
+	//	//						
+	//	//											//And結合のため最小値を求める
+	//	//											double min = DBL_MAX;
+	//	//								
+	//	//											for(int kk = 0; kk<5; kk++)
+	//	//											{ 
+	//	//												if( min >= datamin[kk]) min = datamin[kk];
+	//	//											}
 
-		//										double Ytgrade,Ntgrade;
+	//	//						
+	//	//											//Yes出力
+	//	//											Ygrade += min;
+	//	//											Ywgrade += (min * ruletable[jj].yesWeight);
+	//	//								
+	//	//											//No出力
+	//	//											Ngrade += min;
+	//	//											Nwgrade += (min * ruletable[jj].noWeight);
 
-		//										Ytgrade = (Ygrade == 0) ? 0 : Ywgrade/Ygrade;
-		//										Ntgrade = (Ngrade == 0) ? 0 : Nwgrade/Ngrade;
+	//	//										}	
 
-		//										fprintf(fp,"%d=%d,%d=%d,%d=%d,%d=%d,%d=%d,%f,%f,%f,\n",
-		//											    dp1,dp2,tp1,tp2,ap1,ap2,bp1,bp2,gp1,gp2,Ytgrade,Ntgrade,probability[ii]-Ntgrade);
-		//									
-		//										
-		//									}
-		//								}	
+	//	//										#pragma endregion
 
-		//								#pragma endregion
-		//							}
-		//						}	
+	//	//										double Ytgrade,Ntgrade;
 
-		//						#pragma endregion
-		//					}
-		//				}
+	//	//										Ytgrade = (Ygrade == 0) ? 0 : Ywgrade/Ygrade;
+	//	//										Ntgrade = (Ngrade == 0) ? 0 : Nwgrade/Ngrade;
 
-		//				#pragma endregion
-		//			}
-		//		}
+	//	//										fprintf(fp,"%d=%d,%d=%d,%d=%d,%d=%d,%d=%d,%f,%f,%f,\n",
+	//	//											    dp1,dp2,tp1,tp2,ap1,ap2,bp1,bp2,gp1,gp2,Ytgrade,Ntgrade,probability[ii]-Ntgrade);
+	//	//									
+	//	//										
+	//	//									}
+	//	//								}	
 
-		//		#pragma endregion
-		//	}
-		//}
+	//	//								#pragma endregion
+	//	//							}
+	//	//						}	
 
-		#pragma endregion
-		
-		//fprintf(fp,"deltaP:%f,thetaP:%f,alphaP:%f,betaP:%f,gammaP:%f,目標値%f\n",deltap,thetap,alphap,betap,gammap,probability[ii]);
+	//	//						#pragma endregion
+	//	//					}
+	//	//				}
 
-		//fclose(fp);
-	}
+	//	//				#pragma endregion
+	//	//			}
+	//	//		}
 
-	fclose(fp);
+	//	//		#pragma endregion
+	//	//	}
+	//	//}
+
+	//	#pragma endregion
+	//	
+	//	//fprintf(fp,"deltaP:%f,thetaP:%f,alphaP:%f,betaP:%f,gammaP:%f,目標値%f\n",deltap,thetap,alphap,betap,gammap,probability[ii]);
+
+	//	//fclose(fp);
+	//}
+
+	//fclose(fp);
 
 	#pragma endregion
 
@@ -583,7 +652,7 @@ int main(int argc,char *argv[])
 
 	////δ------------------------------------------------------------
 	//result_write(fp,"deltaT-GOF.csv",deltagof,start,width,end);
-	result_write(fp,"thetaT-GOF.csv",thetagof,start,width,end);
+	//result_write(fp,"thetaT-GOF.csv",thetagof,start,width,end);
 	//result_write(fp,"alphaT-GOF.csv",alphagof,start,width,end);
 	//result_write(fp,"betaT-GOF.csv" ,betagof ,start,width,end);
 	//result_write(fp,"gammaT-GOF.csv",gammagof,start,width,end);

@@ -1,4 +1,4 @@
-﻿2015/01/19 15:42:01 にビルドを開始しました。
+﻿2015/01/21 3:19:56 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "C:\Users\Yuma\Documents\Visual Studio 2010\Projects\FuzzyJudgement\FuzzyJudgement\FuzzyJudgement.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Debug\FuzzyJudgement.unsuccessfulbuild" を作成しています。
@@ -38,8 +38,6 @@
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
      1>c:\users\yuma\documents\visual studio 2010\projects\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(318): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : 'sscanf' の宣言を確認してください。
-     1>c:\users\yuma\documents\visual studio 2010\projects\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(365): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : 'fopen' の宣言を確認してください。
      1>c:\users\yuma\documents\visual studio 2010\projects\fuzzyjudgement\fuzzyjudgement\fuzzyjudgement.cpp(391): warning C4101: 'fname' : ローカル変数は 1 度も使われていません。
        ManifestResourceCompile:
          すべての出力が最新のものです。
@@ -60,4 +58,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:00.94
+経過時間 00:00:00.98
