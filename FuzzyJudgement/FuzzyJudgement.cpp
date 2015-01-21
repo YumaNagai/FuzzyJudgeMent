@@ -159,15 +159,15 @@ void writegof(FILE* fp,vector<MyFourierTransform*>& fftArray,MeberSipFunctionDat
 	int rulecount = ruletable.size();
 	int datacount = fftArray.size();
 
-	for(int ii=0;datacount;ii++)
+	for(int ii=0;ii<datacount;ii++)
 	{
 		Ygrade = Ywgrade = Ngrade = Nwgrade = 0;
 		double bandp[5]={0};
-		double deltap = getWaveProbability(fftArray[ii],Delta) * 100 ;
-		double thetap = getWaveProbability(fftArray[ii],Theta) * 100 ;
-		double alphap = getWaveProbability(fftArray[ii],Alpha) * 100 ;
-		double betap  = getWaveProbability(fftArray[ii],Beta)  * 100 ;
-		double gammap = getWaveProbability(fftArray[ii],Gamma) * 100 ;
+		bandp[0] = getWaveProbability(fftArray[ii],Delta) * 100 ;
+		bandp[1] = getWaveProbability(fftArray[ii],Theta) * 100 ;
+		bandp[2] = getWaveProbability(fftArray[ii],Alpha) * 100 ;
+		bandp[3]  = getWaveProbability(fftArray[ii],Beta)  * 100 ;
+		bandp[4] = getWaveProbability(fftArray[ii],Gamma) * 100 ;
 
 		//ルールテーブルによる適合度計算
 		for(int kk=0;kk<rulecount;kk++)
@@ -206,7 +206,7 @@ void writegof(FILE* fp,vector<MyFourierTransform*>& fftArray,MeberSipFunctionDat
 		Ytgrade = (Ygrade == 0) ? 0 : Ywgrade/Ygrade;
 		Ntgrade = (Ngrade == 0) ? 0 : Nwgrade/Ngrade;
 
-		fprintf(fp,"%f,%f,%f,%f,%f,%f,%f,\n",bandp[0],bandp[1],bandp[2],bandp[3],bandp[4],Ytgrade,Ntgrade);
+		fprintf(fp,"%lf,%lf,%lf,%lf,%lf,%lf,%lf,\n",bandp[0],bandp[1],bandp[2],bandp[3],bandp[4],Ytgrade,Ntgrade);
 	}
 }
 
@@ -324,7 +324,7 @@ int main(int argc,char *argv[])
 	#pragma region データ入力部
 
 	//データの読み込み-------------------------------------------------
-	FILE* fp = fopen("NormalData.csv","r");
+	FILE* fp = fopen("ThinkData10s.csv","r");
 	while(fgets(buf,sizeof(buf),fp)!=NULL)
 	{
 		char *outputlist[1024];		//仮決め
@@ -356,7 +356,7 @@ int main(int argc,char *argv[])
 	//-----------------------------------------------------------------
 
 	//確率テーブル読み込み----------------------------------------------
-	fp = fopen("NormalDataProbability.csv","r");
+	/*fp = fopen("ThinkDataProbability.csv","r");
 	while(fgets(buf,sizeof(buf),fp)!=NULL)
 	{
 		double dd;
@@ -371,7 +371,7 @@ int main(int argc,char *argv[])
 			probability.push_back(dd);
 		}
 	}
-	fclose(fp);
+	fclose(fp);*/
 	//------------------------------------------------------------------
 
 	//ファジールール読み込み--------------------------------------------
@@ -435,6 +435,11 @@ int main(int argc,char *argv[])
 	bandfgydata[3].makeMenberSipFunction(bst,bed,bst,bed);
 	bandfgydata[4].makeMenberSipFunction(gst,ged,gst,ged);
 
+	fp = fopen("Think10s.csv","w");
+
+	writegof(fp,fftArray,bandfgydata,ruletable);
+
+	fclose(fp);
 
 	#pragma region ファジー計算部
 
@@ -677,12 +682,12 @@ int main(int argc,char *argv[])
 	fftArray.clear();
 	data.clear();
 	ruletable.clear();
-	probability.clear();
+	/*probability.clear();
 	deltagof.clear();
 	thetagof.clear();
 	alphagof.clear();
 	betagof.clear();
-	gammagof.clear();
+	gammagof.clear();*/
 
 	#pragma endregion
 
